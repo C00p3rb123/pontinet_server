@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 
 const sepcialistSchema = new mongoose.Schema({
-    name: String,
-    age: Number, 
+    email: String,
+    password: String, 
+    mobile: Number
     
 })
 
 
 
-export default mongoose.model("Users", sepcialistSchema)
+export default mongoose.model("Specialists", sepcialistSchema)
