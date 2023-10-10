@@ -5,4 +5,3 @@ import bcrypt from "bcrypt"
     // return regex.test(email); 
 // }
 
-export const hashPassowrd()

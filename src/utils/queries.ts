@@ -1,5 +1,6 @@
 import mongoose, { ConnectOptions } from "mongoose";
-import Specialists from "../schemas/sp";
+import Specialists from "../database/schemas/sp";
+import db from "../database/db";
 
 
 export const checkForUsers = async (email: string, mobile: number) => {
@@ -7,7 +8,7 @@ export const checkForUsers = async (email: string, mobile: number) => {
     mongoose.connect("mongodb://127.0.0.1:27017/PontinetDB");
     const db = mongoose.connection;
     db.on("error", (error) => console.log(error.message))
-    const users = await Specialists.find({
+    const users = await Specialists.exists({
         $or: [
             {
                 "email": email
@@ -18,9 +19,6 @@ export const checkForUsers = async (email: string, mobile: number) => {
             }
         ]
     })
-
-    db.close();
-    console.log("Db connection closed")
     return users;
  
 } catch(err: any){
