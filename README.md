@@ -1,5 +1,5 @@
 # pontinet_api
-
+Please install node first if you have not already
 ## Install MongoDB
 
 To install Mongo DB go to the following site and follow the steps:
