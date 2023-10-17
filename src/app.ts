@@ -4,15 +4,11 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import swaggerjsdoc from "swagger-jsdoc";
 import swaggerUI = require("swagger-ui-express");
-<<<<<<< HEAD
-import registrationRouter from "../src/routes/registration"
-import messagesRouter from "../src/routes/whatsapp"
-=======
 import registrationRouter from "../src/routes/registration";
 import Specialists from "./schemas/sp.ts";
 import { error } from "console";
 
->>>>>>> main
+import messagesRouter from "../src/routes/whatsapp"
 const app = express();
 dotenv.config();
 app.use(express.json());
@@ -49,3 +45,5 @@ app.get("/hello/testing", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Listening at PORT: ${PORT}`);
 });
+
+export default app
