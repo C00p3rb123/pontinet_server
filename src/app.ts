@@ -5,7 +5,7 @@ import morgan from "morgan";
 import swaggerjsdoc from "swagger-jsdoc";
 import swaggerUI = require("swagger-ui-express");
 import registrationRouter from "../src/routes/registration";
-import Users from "./schemas/sp.ts";
+import Specialists from "./schemas/sp.ts";
 import { error } from "console";
 
 const app = express();
@@ -22,7 +22,7 @@ db.on("error", (error) => console.log(error.message))
 const testDb = async () => {
   try{
 
-    const user = await Users.create({ name: "dev", age: "25" });
+    const user = await Specialists.create({ email: "dev", password: "sdfsdf", mobile: 0o40000000000  });
     // await user.save();
     console.log(user);
   } catch(err: any) {
