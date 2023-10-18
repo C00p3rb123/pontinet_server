@@ -3,3 +3,10 @@ export type Specialist = {
     password: string,
     mobile: number
 }
+
+export type Clinic = {
+    clinicName: string,
+    clinicCountry: string,
+    clinicSuburb: string,
+    clinicOnCallNumber: number
+}
