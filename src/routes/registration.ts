@@ -1,8 +1,7 @@
-import express from "express"
+import express, { Router, Request, Response } from "express";
 import dotenv from "dotenv"
 import axios from "axios"
 import morgan from "morgan";
-import { error } from "console";
 import db from "../database/db";
 import { hashPassowrd } from "../utils/reigstration.services";
 import Specialists from "../database/schemas/sp"
@@ -12,6 +11,7 @@ import { Clinic, Specialist } from "../../types/users";
 const router = express.Router();
 router.use(express.json());
 router.use(morgan("tiny"));
+router.use(express.json());
 
 router.post("/account", async (req, res) => {
 
@@ -47,16 +47,17 @@ router.post("/account", async (req, res) => {
 })
 
 router.post("/clinic-details", (req, res) => {
-    const { clinicName, clinicCountry, clinicSuburb, clinicOnCallNumber }: Clinic = req.body;
+   
+    const { clinicName, clinicCountry, clinicSuburb, clinicOnCallNumber } = req.body;
 
-
-    if (!clinicName ||  !clinicCountry || !clinicSuburb || !clinicOnCallNumber) {
+   
+    if (!clinicName || !clinicCountry || !clinicSuburb || !clinicOnCallNumber) {
         return res.status(400).json({ error: "Invalid clinic details" });
     }
 
-
+  
     return res.status(200).json({ message: "Clinic details received successfully" });
-})
+});
 
-export default router
+export default router;
 
