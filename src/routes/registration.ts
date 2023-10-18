@@ -6,7 +6,7 @@ import { error } from "console";
 import db from "../database/db";
 import { hashPassowrd } from "../utils/reigstration.services";
 import Specialists from "../database/schemas/sp"
-import { Specialist } from "../../types/users";
+import { Clinic, Specialist } from "../../types/users";
 
 
 const router = express.Router();
@@ -47,7 +47,15 @@ router.post("/account", async (req, res) => {
 })
 
 router.post("/clinic-details", (req, res) => {
- 
+    const { clinicName, clinicCountry, clinicSuburb, clinicOnCallNumber }: Clinic = req.body;
+
+
+    if (!clinicName ||  !clinicCountry || !clinicSuburb || !clinicOnCallNumber) {
+        return res.status(400).json({ error: "Invalid clinic details" });
+    }
+
+
+    return res.status(200).json({ message: "Clinic details received successfully" });
 })
 
 export default router
