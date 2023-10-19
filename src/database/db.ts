@@ -1,8 +1,11 @@
 
-import mongoose, { ConnectOptions, Model, Document } from "mongoose";
+import mongoose, { ConnectOptions, Model, Document, Types } from "mongoose";
 import dotenv from "dotenv"
-import { Specialist } from "../../types/users";
-import Specialists from "../database/schemas/sp";
+import Users from "./schemas/user";
+import Clinics from "../database/schemas/clinic"
+import { error } from "console";
+import { Clinic, specialistRegistration } from "../../types/users";
+import user from "./schemas/user";
 
 interface PontinetDbConnection {
   // Method to establish a connection to the database
@@ -19,7 +22,7 @@ interface PontinetDbConnection {
   isUser(email: string, mobile: number): any;
 }
 
-class MongoDBConnection implements PontinetDbConnection {
+class PontinetMongoDBConnection implements PontinetDbConnection {
 
   db: mongoose.Connection
    constructor(connectionString: string | undefined) {
@@ -42,26 +45,80 @@ class MongoDBConnection implements PontinetDbConnection {
     connection.close();
 
   }
-  async isUser(email: string, mobile: number): Promise<{
+  async isUser(identifier: string | number): Promise<{
     _id: mongoose.Types.ObjectId;
   } | null> {
-    if(!email || !mobile){
-      throw new Error("Invalid email or mobile provided to isUser")
+    if(!identifier){
+      console.log(`Invalid email or mobile provided to isUser`);
+      return null
+    }
+    try {
+      if (typeof identifier === 'string'){ 
+        this.db.on("error", (error) => console.log(error.message))
+        const users = await Users.exists({ email: identifier
+      })
+      return users
+    }
+      
+      else{
+        this.db.on("error", (error) => console.log(error.message))
+        const users = await Users.exists({ mobilenumber: identifier
+      })
+      return users
+      }
+      
+      
+
+    } catch (err: any) {
+      console.log(err.message)
+    }
+    throw new Error("Method not implemented.");
+  }
+  async updateUserClinic(email: string, clinicId: string): Promise<void> {
+    
+    if(!clinicId || !email){
+      throw new Error(`Either email or clinicId are missing`)
+    }
+    try{
+      const user = await Users.findOne({email})
+      if(!user){
+        throw new Error(`No user found, unable to update clinic`)
+      }      
+      user.clinicId = clinicId;
+      await user.save();
+      console.log(`User ${email} has successfully updated their clinic`);            
+      
+    }catch(err:any){
+      console.log(err.message);
+    }
+
+  }
+  async updateUserRegistrationDetails(email: string, registrationDetails: specialistRegistration): Promise<void>{
+    if(!registrationDetails || !email){
+      throw new Error(`Either email or registrationDetails are missing`)
+    }
+    try{
+      const user = await Users.findOne({email});
+      if(!user){
+        throw new Error(`No user found, unable to update clinic`)
+      } 
+      user.registrationDetails = registrationDetails;
+      await user.save();
+      console.log(`User ${email} has successfully updated their registrationDetails`);
+    }catch (err: any) {
+      console.log(err.message)
+    }
+  }
+  async isClinic(clinicName: string): Promise<{
+    _id: mongoose.Types.ObjectId;
+  } | null> {
+    if(!clinicName){
+      throw new Error("Invalid clinicName")
     }
     try {
       this.db.on("error", (error) => console.log(error.message))
-      const users = await Specialists.exists({
-        $or: [
-          {
-            "email": email
-
-          },
-          {
-            "mobile": mobile
-          }
-        ]
-      })
-      return users;
+      const clinc = await Users.exists({clinicName: clinicName})
+      return clinc;
 
     } catch (err: any) {
       console.log(err.message)
@@ -69,7 +126,7 @@ class MongoDBConnection implements PontinetDbConnection {
     throw new Error("Method not implemented.");
   }
 
-  async insert<T extends Document>(model: Model<T>, data: Specialist): Promise<void> {
+  async insert<T extends Document>(model: Model<T>, data: any): Promise<any> {
     if (!model) {
       throw new Error("Invalid MongoDB Model.");
     }
@@ -77,13 +134,15 @@ class MongoDBConnection implements PontinetDbConnection {
       throw new Error("Invalid data for insert function");
     }
     try{
-      await model.create(data);
+        await model.create(data)
     }
     catch (err: any){
       console.log(err.message)
     }   
 
   }
+
+
   delete(table: string, condition: string, params?: any[] | undefined): Promise<void> {
     throw new Error("Method not implemented.");
   }
@@ -93,6 +152,6 @@ class MongoDBConnection implements PontinetDbConnection {
 
 }
 
-const db = new MongoDBConnection("mongodb://127.0.0.1:27017/PontinetDB")
+const db = new PontinetMongoDBConnection("mongodb://127.0.0.1:27017/PontinetDB")
 
 export default db
