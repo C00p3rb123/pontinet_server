@@ -4,12 +4,12 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import swaggerjsdoc from "swagger-jsdoc";
 import swaggerUI = require("swagger-ui-express");
-
 import registrationRouter from "../src/routes/registration"
 import messagesRouter from "../src/routes/whatsapp"
+import caseRouter from "../src/routes/cases"
 
 
-import Specialists from "./schemas/sp.ts";
+import User from "../src/database/schemas/user";
 
 
 const app = express();
@@ -32,14 +32,14 @@ const PORT = process.env.PORT;
   // } catch(err: any) {
     // console.log(err.message)
   // }; 
-//  
+// 
 // };
 
-testDb();
+// testDb();
 
 app.use(morgan("tiny"));
 app.use("/registration", registrationRouter);
-app.use("/whatsapp", messagesRouter);
+app.use("/cases", caseRouter);
 
 app.get("/hello/testing", (req, res) => {
   console.log("Hello xcvxcv");
