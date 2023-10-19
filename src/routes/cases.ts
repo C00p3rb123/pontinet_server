@@ -15,15 +15,17 @@ router.use(express.json());
 
 
 router.post("/send", async (req, res) => {
+    const spCase = req.body;
+    console.log(spCase);
     const spResponse = {
         caseName: "Test case",
-        paitentInformation: mockCase.paitentInformation,
-        generalInstructions: mockCase.generalInstructions,
-        dischargeInstructions: mockCase.dischargeInstructions,
+        paitentInformation: spCase.paitentInformation,
+        generalInstructions: spCase.generalInstructions,
+        dischargeInstructions: spCase.dischargeInstructions,
         specialist: `Dr Jonathan Chernilo`
     }
     try{
-        const text = createDocument(mockCase); 
+        const text = createDocument(spCase); 
         await db.insert(Cases, spResponse);
         await sendWhatsApp(text);
         res.status(200);

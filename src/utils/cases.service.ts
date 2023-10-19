@@ -6,16 +6,17 @@ export const createDocument = (spCaseResponse: Case) => {
 
 const jsonString = JSON.stringify(spCaseResponse, null, 2);
 const text = 
-`Personal Information:\n
+`PONTINET SPECIALIST RESPONSE\n\n
+Personal Information:\n
 - Name: ${spCaseResponse.paitentInformation.name}\n
 - Age: ${spCaseResponse.paitentInformation.age}\n
 - Description: ${spCaseResponse.paitentInformation.description}\n
 - GP: ${spCaseResponse.paitentInformation.gp}\n
 - Clinic : ${spCaseResponse.paitentInformation.clinic}\n
 - Regeral Date: ${spCaseResponse.paitentInformation.referalDate}\n\n
-'General Instructions:\n
-- DiagnosticImpression: ${spCaseResponse.generalInstructions.diagnosticImpression}\n\n
-'Discharge Instructions: \n
+General Instructions:\n
+- Diagnostic Impression: ${spCaseResponse.generalInstructions.diagnosticImpression}\n\n
+Discharge Instructions: \n
 - General Indications: ${spCaseResponse.dischargeInstructions.generalIndications}\n
 - Medication: ${spCaseResponse.dischargeInstructions.medication}\n
 - Follow Up: ${spCaseResponse.dischargeInstructions.followUpDetails}\n

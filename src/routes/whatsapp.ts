@@ -6,8 +6,6 @@ import axios from "axios"
 const router = express.Router();
 
 
-
-
 router.post("/send", (req, res) => {
     const url = 'https://graph.facebook.com/v18.0/128242553703490/messages';
     const accessToken = process.env.WHATSAPP_ACCESS;
