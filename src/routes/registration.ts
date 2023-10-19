@@ -60,7 +60,7 @@ router.post("/clinic-details", async (req, res) => {
         return res.status(400).json({ error: "Unable to store clinic details as user does not exist" });
     }
     const clinic: Clinic = {
-        clinicId: new mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         clinicName: clinicName,
         clinicCountry: clinicCountry,
         clinicSuburb: clinicSuburb,
@@ -73,7 +73,7 @@ router.post("/clinic-details", async (req, res) => {
         await db.insert(Clinics, clinic);                                 
         }
 
-        await db.updateUserClinic(email, clinic.clinicId.toString());  
+        await db.updateUserClinic(email, clinic._id.toString());  
         return res.status(200).json({ message: "Clinic details received successfully" });   
 
     }catch(err: any){

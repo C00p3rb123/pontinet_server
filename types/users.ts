@@ -19,7 +19,7 @@ export type specialistRegistration = {
 }
 
 export type Clinic = {
-    clinicId: Types.ObjectId
+    _id: Types.ObjectId
     clinicName: string,
     clinicCountry: string,
     clinicSuburb: string,
