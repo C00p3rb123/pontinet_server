@@ -6,20 +6,26 @@ import Clinics from "../database/schemas/clinic"
 import { error } from "console";
 import { Clinic, specialistRegistration } from "../../types/users";
 import user from "./schemas/user";
+import { mode } from "crypto-js";
+import { Mode } from "fs";
 
 interface PontinetDbConnection {
   // Method to establish a connection to the database
   connect(connectionString?: string): any;
   // Method to close the database connection
+  
   close(connection: any): void;  
-  // Method to insert data into the database
-  insert(table?: any, data?: any): Promise<void>;
+   // Method to see retrieve a document 
+  get(table: any , key: string, value: any, output: string): any;
+  // Method to setDocument data into the database
+  set(table: any, data?: any): Promise<void>;
+  //Check if Row or document exists
+  exists(table: any, query: any): any
   // Method to delete data from the database
   delete(table: string, condition: string, params?: any[]): Promise<void>;
   // Optional: method to check if the connection is established
   isConnected(): boolean;
-  // Method to see if user is present in the DB
-  isUser(email: string, mobile: number): any;
+ 
 }
 
 class PontinetMongoDBConnection implements PontinetDbConnection {
@@ -45,93 +51,36 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
     connection.close();
 
   }
-  async isUser(identifier: string | number): Promise<{
-    _id: mongoose.Types.ObjectId;
-  } | null> {
-    if(!identifier){
-      console.log(`Invalid email or mobile provided to isUser`);
-      return null
-    }
-    try {
-      if (typeof identifier === 'string'){ 
-        this.db.on("error", (error) => console.log(error.message))
-        const users = await Users.exists({ email: identifier
-      })
-      return users
-    }
-      
-      else{
-        this.db.on("error", (error) => console.log(error.message))
-        const users = await Users.exists({ mobilenumber: identifier
-      })
-      return users
-      }
-      
-      
+  
+/**
+ * get Document returns a document with its specified field/s
+ * @param model: This is the collection in the DB
+ * @param key: This is the key attribute in the document
+ * @param value: This is a unique attribute in the document to help find it
+ * @param output: The specific attributes you want returned
+ * @returns a document with specified fields defined by output 
+ */
 
-    } catch (err: any) {
-      console.log(err.message)
-    }
-    throw new Error("Method not implemented.");
-  }
-  async updateUserClinic(email: string, clinicId: string): Promise<void> {
+  async get<T extends Document>(model: Model<T>, query: Object, output: string ): Promise<any>{
     
-    if(!clinicId || !email){
-      throw new Error(`Either email or clinicId are missing`)
+    if(!model || !query){
+      throw new Error("Model, key or value is invalid in getDocument");
     }
     try{
-      const user = await Users.findOne({email})
-      if(!user){
-        throw new Error(`No user found, unable to update clinic`)
-      }      
-      user.clinicId = clinicId;
-      await user.save();
-      console.log(`User ${email} has successfully updated their clinic`);            
+      const document:any = await model.findOne(query).select(output).exec();
+      return document
       
-    }catch(err:any){
-      console.log(err.message);
-    }
-
-  }
-  async updateUserRegistrationDetails(email: string, registrationDetails: specialistRegistration): Promise<void>{
-    if(!registrationDetails || !email){
-      throw new Error(`Either email or registrationDetails are missing`)
-    }
-    try{
-      const user = await Users.findOne({email});
-      if(!user){
-        throw new Error(`No user found, unable to update clinic`)
-      } 
-      user.registrationDetails = registrationDetails;
-      await user.save();
-      console.log(`User ${email} has successfully updated their registrationDetails`);
-    }catch (err: any) {
+    }catch(err: any){
       console.log(err.message)
+      throw new Error(err.message);
     }
   }
-  async isClinic(clinicName: string): Promise<{
-    _id: mongoose.Types.ObjectId;
-  } | null> {
-    if(!clinicName){
-      throw new Error("Invalid clinicName")
-    }
-    try {
-      this.db.on("error", (error) => console.log(error.message))
-      const clinc = await Users.exists({clinicName: clinicName})
-      return clinc;
-
-    } catch (err: any) {
-      console.log(err.message)
-    }
-    throw new Error("Method not implemented.");
-  }
-
-  async insert<T extends Document>(model: Model<T>, data: any): Promise<any> {
+  async set<T extends Document>(model: Model<T>, data: any): Promise<any> {
     if (!model) {
       throw new Error("Invalid MongoDB Model.");
     }
     if (!data) {
-      throw new Error("Invalid data for insert function");
+      throw new Error("Invalid data for setDocument function");
     }
     try{
         await model.create(data)
@@ -141,7 +90,35 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
     }   
 
   }
-
+  //model, attribute, query
+  async update<T extends Document>(model: Model<T>, attribute: keyof T, query: Object, newData: T[keyof T] ): Promise<void>{
+    if(!model || !attribute || !query|| !newData){
+      throw new Error(`update missing parameters`)
+    }
+    try{
+      const document = await model.findOne(query);
+      if(!document){
+        throw new Error(`No document found in update`)
+      } 
+      (document as any)[attribute] = newData;
+      await document.save();
+      console.log(`User has successfully updated their registrationDetails`);
+    }catch (err: any) {
+      console.log(err.message)
+    }
+  }
+  async exists<T extends Document>(model: Model<T>, query: Object ){
+      if(!model || !query){
+        throw new Error("Model or data is invalid");
+      }
+      try{
+        const result = await model.exists(query);
+        return result
+      }catch(err: any){
+        console.log(err.message)
+        throw new Error(err.message);
+      }
+  }
 
   delete(table: string, condition: string, params?: any[] | undefined): Promise<void> {
     throw new Error("Method not implemented.");

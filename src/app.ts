@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import swaggerjsdoc from "swagger-jsdoc";
 import swaggerUI = require("swagger-ui-express");
-import registrationRouter from "../src/routes/registration"
+import accountRouter from "./routes/account"
 import messagesRouter from "../src/routes/whatsapp"
 import caseRouter from "../src/routes/cases"
 
@@ -38,7 +38,7 @@ const PORT = process.env.PORT;
 // testDb();
 
 app.use(morgan("tiny"));
-app.use("/registration", registrationRouter);
+app.use("/account", accountRouter);
 app.use("/cases", caseRouter);
 
 app.get("/hello/testing", (req, res) => {
