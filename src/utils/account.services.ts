@@ -1,0 +1,56 @@
+import bcrypt from "bcrypt"
+import mongoose, { ConnectOptions } from "mongoose";
+import Specialists from "../database/schemas/user";
+import db from "../database/db";
+import { error } from "console";
+import user from "../database/schemas/user";
+
+export const hashPassowrd = async (password: string): Promise<string> => {
+    const saltRounds = 10;
+    if (!password) {
+       throw new Error("Password unable to be stored");
+    }
+    const hash = await bcrypt.hash(password, saltRounds);
+    return hash;
+}
+export const dobValidator = (dateOfBirth: string): boolean => {
+    const dateOfBirthRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+    if (!dateOfBirth.match(dateOfBirthRegex)) {
+    return false
+}
+    return true
+}
+
+export const emailValidator = (email : string): boolean => {
+    const emailRegex = /\S+@\S+\.\S+/;
+    if(!emailRegex.test(email)){
+        return false
+    }
+    return true
+}
+// export const verifyPassword = (password: string, hashedPassword: string, error:string) => {
+    // if(!email){
+        // throw new Error(error)
+    // }
+// 
+// }   
+// export const  loginVerification = (email: string, password: string): boolean => {
+    // 
+    // const standardLoginError = "Invalid email or password"
+    // 
+    // if (!email || !password) {
+        // throw new Error(standardLoginError)
+    // }
+    // await emailValidator(email);
+    // 
+    // const user = await db.getUser(email).select;
+// 
+    // if (!isUser ){
+        // throw new  Error(standardLoginError)
+    // }
+    // user._doc
+// 
+    // return true
+// }
+
+

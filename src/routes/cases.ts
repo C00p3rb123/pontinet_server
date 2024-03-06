@@ -26,7 +26,7 @@ router.post("/send", async (req, res) => {
     }
     try{
         const text = createDocument(spCase); 
-        await db.insert(Cases, spResponse);
+        await db.set(Cases, spResponse);
         await sendWhatsApp(text);
         res.status(200);
         res.send({
