@@ -4,6 +4,12 @@ import { type } from "os"
 export type UserAccount = {
     email: string,
     password: string,
+    type: UserTypes,
+    registrationDetails: specialistRegistration
+}
+export type UserPayload = {
+    id: string,
+    email: string,
 }
 
 export type specialistRegistration = {
@@ -30,6 +36,6 @@ export type userType = UserTypes.GP | UserTypes.SP
 
 export enum UserTypes  {
     GP = "General Practioner",
-    SP = "Specialist"
-
+    SP = "Specialist",
+    ADMIN = "Admin",
 }

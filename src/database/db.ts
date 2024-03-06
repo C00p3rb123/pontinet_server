@@ -9,6 +9,8 @@ import user from "./schemas/user";
 import { mode } from "crypto-js";
 import { Mode } from "fs";
 
+dotenv.config();
+
 interface PontinetDbConnection {
   // Method to establish a connection to the database
   connect(connectionString?: string): any;
@@ -55,8 +57,7 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
 /**
  * get Document returns a document with its specified field/s
  * @param model: This is the collection in the DB
- * @param key: This is the key attribute in the document
- * @param value: This is a unique attribute in the document to help find it
+ *@param query; The document you wish to aquire
  * @param output: The specific attributes you want returned
  * @returns a document with specified fields defined by output 
  */
@@ -129,6 +130,6 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
 
 }
 
-const db = new PontinetMongoDBConnection("mongodb://127.0.0.1:27017/PontinetDB")
+const db = new PontinetMongoDBConnection(process.env.DB_CONNECTION)
 
 export default db

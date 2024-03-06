@@ -16,10 +16,10 @@ router.use(express.json());
 
 router.post("/register", async (req, res) => {
 
-    const { email, password }: UserAccount = req.body;
+    const { email, password, type, registrationDetails }: UserAccount = req.body;
 
-    if (!email || !password) {
-        res.status(400).json({ "error": true, "message": "Request body incomplete, email, password and mobile are required" });
+    if (!email || !password || !type || !registrationDetails) {
+        res.status(400).json({ "error": true, "message": "Request body incomplete, email, password, type and registration details are required" });
         return;
     }
 
@@ -31,9 +31,11 @@ router.post("/register", async (req, res) => {
 
     try {
         const hash = await hashPassowrd(password);
-        const user = {
+        const user: UserAccount = {
             email: email,
-            password: hash
+            password: hash,
+            type: type,
+            registrationDetails: registrationDetails
         }
         await db.set(Users, user) //need to fix this to be able to handle gps in the future. 
         res.status(200);
@@ -82,63 +84,24 @@ router.post("/register/clinic-details", async (req, res) => {
     
 });
 
-router.post("/register/sp-details", async (req, res) => {
-    const {
-        name,
-        gender,
-        dateOfBirth,
-        specialisation,
-        subSpecialisation,
-        dateOfSpecilisation,
-        registrationId,
-        registrationCouncil,
-        mobileNumber,
-       
-    }: specialistRegistration = req.body;
-
-    const email = req.body.email;
-    if (
-        !name ||
-        !specialisation ||
-        !subSpecialisation ||
-        !registrationId ||
-        !registrationCouncil ||
-        !mobileNumber ||
-        !email
-    ) {
-        return res.status(400).json({ error: true, message: "Invalid SP details: All fields are required." });
-    }
-    const user = await db.get(Users, {email: email}, "email")
-    if (!user){
-        return res.status(400).json({ error: "Unable to store registration details as user does not exist" });
-    }
-    if (dateOfBirth && !dobValidator(dateOfBirth)) {
-        return res.status(400).json({ error: true, message: "Invalid date of birth format. Use dd/mm/yyyy." });
-    }
-    if (dateOfSpecilisation && !dobValidator(dateOfSpecilisation)) {
-        return res.status(400).json({ error: true, message: "Invalid date of specialisation format. Use dd/mm/yyyy." });
-    }
-    const registrationDetails = {
-        name: name,
-        specialisation: specialisation,
-        subSpecialisation: subSpecialisation,
-        registrationId: registrationId,
-        registrationCouncil: registrationCouncil,
-        mobileNumber: mobileNumber
-    }
-    try{
-        await db.update(Users, 'registrationDetails', {email: email}, registrationDetails);
-        return res.status(200).json({ message: "SP details received successfully" });
-    } catch(err: any){
-        console.log(err.message);
-        return res.status(400).json({ error: true, message: `Unable to store registration details. Error message: ${err.message}` });
-    }
-    
-    
-});
 router.post("/login", async (req, res) => {
 
-   
+    const { email, password }: UserAccount = req.body;
+
+    if (!email || !password) {
+        res.status(400).json({ "error": true, "message": "Request body incomplete, email and password required" });
+        return;
+    }  
+    const user = await db.get(Users, {email: email}, "type");
+    if(!user){
+        res.status(400).json({ "error": true, "message": "Invalid email or password" });
+        return;
+    }
+    const type = user._doc.type; 
+
+    //password check
+
+
 
 })
 

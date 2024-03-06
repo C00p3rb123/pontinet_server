@@ -28,6 +28,11 @@ export const emailValidator = (email : string): boolean => {
     }
     return true
 }
+
+// const generateToken = (user) => {
+    // 
+// }
+
 // export const verifyPassword = (password: string, hashedPassword: string, error:string) => {
     // if(!email){
         // throw new Error(error)
