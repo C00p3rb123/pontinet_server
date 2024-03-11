@@ -4,7 +4,7 @@ import { type } from "os"
 export type UserAccount = {
     _id?: Types.ObjectId,
     email: string,
-    hashedPassword: string,
+    password: string,
     type: UserTypes,
     registrationDetails: specialistRegistration
 }

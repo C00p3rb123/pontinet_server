@@ -33,8 +33,8 @@ router.post("/register", async (req, res) => {
     return;
   }
 
-  const users = await db.get(Users, { email: email }, "email password");
-  if (users) {
+  const isUser = await db.exists(Users, {email: email});
+  if (isUser) {
     res.status(400).json({ error: true, message: "Unable to store account" });
     return;
   }
@@ -43,7 +43,7 @@ router.post("/register", async (req, res) => {
     const hash = await hashPassowrd(password);
     const user: UserAccount = {
       email: email,
-      hashedPassword: hash,
+      password: hash,
       type: type,
       registrationDetails: registrationDetails,
     };
@@ -127,19 +127,26 @@ router.post("/login", async (req, res) => {
       });
     return;
   }
-  const user = await db.get(Users, { email: email }, "password");
-  if (!user) {
+  try{
+    const user = await db.get(Users, { email: email }, "password");
+    if (!user) {
+      res.status(400).json({ error: true, message: "Invalid email or password" });
+      return;
+    }
+    const hashedPassword = user.password;
+    const result = await verifyPassword(password, hashedPassword);
+    if (!result) {
+      res.status(400).json({ error: true, message: "Invalid email or password" });
+      return;
+    }
+    const token = await generateToken(email);
+    res.status(200).send(({ token: `${token}` }))
+
+  }catch(err){
     res.status(400).json({ error: true, message: "Invalid email or password" });
     return;
   }
-  const hashedPassword = user.password;
-  const result = await verifyPassword(password, hashedPassword);
-  if (!result) {
-    res.status(400).json({ error: true, message: "Invalid email or password" });
-    return;
-  }
-  const token = await generateToken(email);
-  res.status(200).send(({ token: `${token}` }))
+
 });
 
 export default router;

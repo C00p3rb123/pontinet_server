@@ -69,6 +69,9 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
     }
     try{
       const document:any = await model.findOne(query).select(output).exec();
+      if(!document){
+        throw new Error('Invalid request')
+      }
       return document._doc
       
     }catch(err: any){

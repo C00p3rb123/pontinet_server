@@ -7,6 +7,8 @@ import swaggerUI = require("swagger-ui-express");
 import accountRouter from "./routes/account"
 import messagesRouter from "../src/routes/whatsapp"
 import caseRouter from "../src/routes/cases"
+import cors from "cors"; 
+
 
 
 import User from "../src/database/schemas/user";
@@ -15,6 +17,7 @@ import User from "../src/database/schemas/user";
 const app = express();
 dotenv.config();
 app.use(express.json());
+app.use(cors());
 
 const PORT = process.env.PORT;
 
