@@ -7,6 +7,7 @@ import { createDocument, sendWhatsApp } from "../utils/cases.service";
 import { mockCase } from "../../mocks/case.mock";
 import Cases from "../database/schemas/case"
 import { mock } from "node:test";
+import { verifyToken } from "../utils/auth";
 
 const router = express.Router();
 router.use(express.json());
@@ -14,7 +15,7 @@ router.use(morgan("tiny"));
 router.use(express.json());
 
 
-router.post("/send", async (req, res) => {
+router.post("/send", verifyToken,  async (req, res) => {
     const spCase = req.body;
     console.log(spCase);
     const spResponse = {

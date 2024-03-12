@@ -3,12 +3,11 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import db from "../database/db";
 import {
-  dobValidator,
-  emailValidator,
   generateToken,
   hashPassowrd,
   verifyPassword,
-} from "../utils/account.services";
+  verifyToken
+} from "../utils/auth";
 import Users from "../database/schemas/user";
 import Clinics from "../database/schemas/clinic";
 import { Clinic, UserAccount, specialistRegistration } from "../../types/users";
@@ -63,7 +62,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/register/clinic-details", async (req, res) => {
+router.post("/register/clinic-details", verifyToken, async (req, res) => {
   const {
     clinicName,
     clinicCountry,
