@@ -18,7 +18,7 @@ export const generateToken = async (email: string): Promise<string> => {
         role: user.type,
         iat: Math.floor(Date.now() / 1000)
     }
-    const token = jwt.sign(payload, process.env.SECRET!, {expiresIn: '2m'})
+    const token = jwt.sign(payload, process.env.SECRET!, {expiresIn: '1d'})
     return token
 }
 
