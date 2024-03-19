@@ -26,22 +26,3 @@ export const emailValidator = (email: string): boolean => {
   }
   return true;
 };
-
-// export const  loginVerification = (email: string, password: string): boolean => {
-//
-// const standardLoginError = "Invalid email or password"
-//
-// if (!email || !password) {
-// throw new Error(standardLoginError)
-// }
-// await emailValidator(email);
-//
-// const user = await db.getUser(email).select;
-//
-// if (!isUser ){
-// throw new  Error(standardLoginError)
-// }
-// user._doc
-//
-// return true
-// }
