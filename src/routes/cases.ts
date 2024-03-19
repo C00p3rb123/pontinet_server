@@ -39,5 +39,11 @@ router.post("/send", verifyToken,  async (req, res) => {
         res.status(400).json({ "error": true, "message": `Unable to send Whatsapp message due to ${err.message}` });
     }     
 })
+router.post("/recieve", async (req, res) =>{
+    console.log(req.body);
+    res.status(200).send({
+        "Successful": "Recieved case"
+    })
+})
 
 export default router
