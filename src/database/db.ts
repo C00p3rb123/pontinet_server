@@ -4,10 +4,12 @@ import dotenv from "dotenv"
 import Users from "./schemas/user";
 import Clinics from "../database/schemas/clinic"
 import { error } from "console";
-import { Clinic, specialistRegistration } from "../../types/users";
+import { Clinic,  specialistRegistration } from "../../types/users";
 import user from "./schemas/user";
 import { mode } from "crypto-js";
 import { Mode } from "fs";
+
+dotenv.config();
 
 interface PontinetDbConnection {
   // Method to establish a connection to the database
@@ -55,8 +57,7 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
 /**
  * get Document returns a document with its specified field/s
  * @param model: This is the collection in the DB
- * @param key: This is the key attribute in the document
- * @param value: This is a unique attribute in the document to help find it
+ *@param query; The document you wish to 
  * @param output: The specific attributes you want returned
  * @returns a document with specified fields defined by output 
  */
@@ -68,7 +69,10 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
     }
     try{
       const document:any = await model.findOne(query).select(output).exec();
-      return document
+      if(!document){
+        throw new Error('Invalid request')
+      }
+      return document._doc
       
     }catch(err: any){
       console.log(err.message)
@@ -129,6 +133,6 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
 
 }
 
-const db = new PontinetMongoDBConnection("mongodb://127.0.0.1:27017/PontinetDB")
+const db = new PontinetMongoDBConnection(process.env.DB_CONNECTION)
 
 export default db
