@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
  * @returns JWT token for authentication
  */
 export const generateToken = async (email: string): Promise<string> => {
-    const user = await db.get(Users, {email: email}, "type" );
+    const user = await db.getOne(Users, {email: email}, "type" );
     if(!user){
         throw new Error("Unable to generate token")
     }
