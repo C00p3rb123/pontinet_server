@@ -45,7 +45,9 @@ router.post("/recieve", verifyToken, async (req, res) =>{
     await db.set(Cases, {
         paitentInformation: paitentInformation
     });
-    res.status(200);    
+    res.status(200).send({
+        "Message": "Received"
+    });    
     }
 )
 router.get("/retrieve", verifyToken, async (req, res) => {
