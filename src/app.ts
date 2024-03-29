@@ -6,7 +6,7 @@ import swaggerjsdoc from "swagger-jsdoc";
 import swaggerUI = require("swagger-ui-express");
 import accountRouter from "./routes/account"
 import messagesRouter from "../src/routes/whatsapp"
-import caseRouter from "../src/routes/cases"
+import caseRouter from "./routes/cases/cases"
 import cors from "cors"; 
 
 

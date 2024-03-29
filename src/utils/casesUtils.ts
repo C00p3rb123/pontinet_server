@@ -8,9 +8,8 @@ const jsonString = JSON.stringify(spCaseResponse, null, 2);
 const text = 
 `PONTINET SPECIALIST RESPONSE\n\n
 Personal Information:\n
-- Name: ${spCaseResponse.paitentInformation.name}\n
 - Age: ${spCaseResponse.paitentInformation.age}\n
-- Description: ${spCaseResponse.paitentInformation.description}\n
+- Description: ${spCaseResponse.paitentInformation.illnessDescription}\n
 - GP: ${spCaseResponse.paitentInformation.gp}\n
 - Clinic : ${spCaseResponse.paitentInformation.clinic}\n
 - Regeral Date: ${spCaseResponse.paitentInformation.referalDate}\n\n

@@ -18,7 +18,9 @@ interface PontinetDbConnection {
   
   close(connection: any): void;  
    // Method to see retrieve a document 
-  get(table: any , key: string, value: any, output: string): any;
+  getOne(table: any , key: string, value: any, output: string): any;
+  //Method to retrieve multiple documents
+  getMany(table: any , key: string, value: any, output: string): any;
   // Method to setDocument data into the database
   set(table: any, data?: any): Promise<void>;
   //Check if Row or document exists
@@ -62,7 +64,7 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
  * @returns a document with specified fields defined by output 
  */
 
-  async get<T extends Document>(model: Model<T>, query: Object, output: string ): Promise<any>{
+  async getOne<T extends Document>(model: Model<T>, query: Object, output: string ): Promise<any>{
     
     if(!model || !query){
       throw new Error("Model, key or value is invalid in getDocument");
@@ -78,6 +80,29 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
       console.log(err.message)
       throw new Error(err.message);
     }
+  }
+  async getMany<T extends Document>(model: Model<T>, query: Object, output?: string ): Promise<any>{
+    if(!model || !query){
+      throw new Error("Model, key or value is invalid in getDocument");
+    }
+    try{
+      
+      if(!output){
+        const document:any = (await model.find(query)).map((doc: any) => {
+          return doc._doc;
+        })
+        return document;
+      }
+      const document:any = (await model.find(query).select(output).exec()).map((doc: any) => {
+        return doc._doc;
+      });
+      return document      
+      
+    }catch(err: any){
+      console.log(err.message)
+      throw new Error(err.message);
+    }
+
   }
   async set<T extends Document>(model: Model<T>, data: any): Promise<any> {
     if (!model) {

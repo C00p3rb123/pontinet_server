@@ -127,7 +127,7 @@ router.post("/login", async (req, res) => {
     return;
   }
   try{
-    const user = await db.get(Users, { email: email }, "password");
+    const user = await db.getOne(Users, { email: email }, "password");
     if (!user) {
       res.status(400).json({ error: true, message: "Invalid email or password" });
       return;

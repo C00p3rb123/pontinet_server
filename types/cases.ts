@@ -1,3 +1,10 @@
+export type illnessDescription ={
+    segment: string,
+    segmentDetails: string,
+    mechanism: string,
+    mechanismDetails: string,
+
+}
 
 export type GeneralInstructions = {
     diagnosticImpression: string,
@@ -13,11 +20,10 @@ export type DischargeInstructions = {
 }
 
 export type PaitentInformation = {
-    name: string
     age: number,  
-    description: string,
+    illnessDescription: illnessDescription,
     gp: string
-    clinic: string
+    clinic?: string
     referalDate: string;
 }
 
@@ -26,4 +32,6 @@ export type Case = {
     dischargeInstructions: DischargeInstructions,
     paitentInformation: PaitentInformation
 }
-
+export type InitialCase= {
+    paitentInformation: PaitentInformation
+}
