@@ -22,7 +22,7 @@ Repeat steps 2-3 after a git pull. (Shouldn't have to always do this but just in
 
 1. cp .env.development .env
 2. yarn
-3. yarn run dev
+3. yarn     dev
 
 Reach out if there are any difficutlites 
 

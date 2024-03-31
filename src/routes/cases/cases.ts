@@ -1,13 +1,14 @@
 import express from "express";
 import dotenv from "dotenv"
 import morgan from "morgan";
-import db from "../database/db";
-import { Case } from "../../types/cases";
-import { createDocument, sendWhatsApp } from "../utils/casesUtils";
-import { mockCase } from "../../mocks/case.mock";
-import Cases from "../database/schemas/case"
+import db from "../../database/db";
+import { Case, PaitentInformation } from "../../../types/cases";
+import { createDocument, sendWhatsApp } from "../../utils/casesUtils";
+import { mockCase } from "../../../mocks/case.mock";
+import Cases from "../../database/schemas/case"
 import { mock } from "node:test";
-import { verifyToken } from "../utils/auth";
+import { verifyToken } from "../../utils/auth";
+
 
 const router = express.Router();
 router.use(express.json());
@@ -39,11 +40,25 @@ router.post("/send", verifyToken,  async (req, res) => {
         res.status(400).json({ "error": true, "message": `Unable to send Whatsapp message due to ${err.message}` });
     }     
 })
-router.post("/recieve", async (req, res) =>{
-    console.log(req.body);
+router.post("/recieve", verifyToken, async (req, res) =>{
+    const paitentInformation: PaitentInformation  = req.body;
+    await db.set(Cases, {
+        paitentInformation: paitentInformation
+    });
     res.status(200).send({
-        "Successful": "Recieved case"
-    })
+        "Message": "Received"
+    });    
+    }
+)
+router.get("/retrieve", verifyToken, async (req, res) => {
+    try{
+        const newCases = await db.getMany(Cases, {sepcialist: {$exists: false}}, "paitentInformation");
+        res.status(200).send(newCases)
+    }catch(err: any){
+        res.status(400).json({ "error": true, "message": `Unable to retrieve new cases due to ${err.message}` });
+    }
+    
+
 })
 
 export default router
