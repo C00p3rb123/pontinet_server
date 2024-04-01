@@ -6,19 +6,16 @@ import {
   generateToken,
   hashPassowrd,
   verifyPassword,
-  verifyToken
 } from "../utils/auth";
 import Users from "../database/schemas/user";
-import Clinics from "../database/schemas/clinic";
-import { Clinic, UserAccount, specialistRegistration } from "../../types/users";
-import mongoose from "mongoose";
+import {UserAccount } from "../../types/users";
 
 const router = express.Router();
 router.use(express.json());
 router.use(morgan("tiny"));
 router.use(express.json());
 
-router.post("/register", async (req, res) => {
+router.post("/medical-professional/user/register", async (req, res) => {
   const { email, password, type, registrationDetails, clinicDetails } = req.body;
 
   if (!email || !password || !type || !registrationDetails || !clinicDetails) {
@@ -45,7 +42,7 @@ router.post("/register", async (req, res) => {
       password: hash,
       type: type,
       registrationDetails: registrationDetails,
-      clinicDetail: clinicDetails
+      clinicDetails: clinicDetails
     };
     await db.set(Users, user); //need to fix this to be able to handle gps in the future.
     res.status(200);
