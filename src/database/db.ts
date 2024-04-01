@@ -6,8 +6,6 @@ import Clinics from "../database/schemas/clinic"
 import { error } from "console";
 import { Clinic,  specialistRegistration } from "../../types/users";
 import user from "./schemas/user";
-import { mode } from "crypto-js";
-import { Mode } from "fs";
 
 dotenv.config();
 

@@ -19,15 +19,15 @@ router.use(morgan("tiny"));
 router.use(express.json());
 
 router.post("/register", async (req, res) => {
-  const { email, password, type, registrationDetails } = req.body;
+  const { email, password, type, registrationDetails, clinicDetails } = req.body;
 
-  if (!email || !password || !type || !registrationDetails) {
+  if (!email || !password || !type || !registrationDetails || !clinicDetails) {
     res
       .status(400)
       .json({
         error: true,
         message:
-          "Request body incomplete, email, password, type and registration details are required",
+          "Request body incomplete, email, password, type, registration and clinic details are required",
       });
     return;
   }
@@ -38,19 +38,21 @@ router.post("/register", async (req, res) => {
     return;
   }
 
+  const clinic: Clinic = {
+    _id: new mongoose.Types.ObjectId(),
+    clinicName: clinicDetails.clinicName,
+    clinicCountry: clinicDetails.clinicCountry,
+    clinicSuburb: clinicDetails.clinicSuburb,
+    clinicOnCallNumber: clinicDetails.clinicOnCallNumber,
+  };
+
   try {
-    const hash = await hashPassowrd(password);
-    const user: UserAccount = {
-      email: email,
-      password: hash,
-      type: type,
-      registrationDetails: registrationDetails,
-    };
-    await db.set(Users, user); //need to fix this to be able to handle gps in the future.
-    res.status(200);
-    res.send({
-      Message: `User with email ${email} has been successfully created`,
-    });
+    const isClinic = await db.exists(Clinics, { clinicName: clinicDetails.clinicName });
+    if (!isClinic) {
+      await db.set(Clinics, clinic);
+    }
+
+    await db.update(Users, "clinicId", email, clinic._id.toString());
   } catch (err: any) {
     console.log(err.message);
     res
@@ -60,49 +62,21 @@ router.post("/register", async (req, res) => {
         message: `Unable to store account due to ${err.message}`,
       });
   }
-});
 
-router.post("/register/clinic-details", verifyToken, async (req, res) => {
-  const {
-    clinicName,
-    clinicCountry,
-    clinicSuburb,
-    clinicOnCallNumber,
-  }: Clinic = req.body;
-  const email = req.body.email;
-
-  if (
-    !clinicName ||
-    !clinicCountry ||
-    !clinicSuburb ||
-    !clinicOnCallNumber ||
-    !email
-  ) {
-    return res.status(400).json({ error: "Invalid clinic details" });
-  }
-  const user = await db.exists(Users, { email });
-  if (!user) {
-    return res
-      .status(400)
-      .json({ error: "Unable to store clinic details as user does not exist" });
-  }
-  const clinic: Clinic = {
-    _id: new mongoose.Types.ObjectId(),
-    clinicName: clinicName,
-    clinicCountry: clinicCountry,
-    clinicSuburb: clinicSuburb,
-    clinicOnCallNumber: clinicOnCallNumber,
-  };
   try {
-    const isClinic = await db.exists(Clinics, { clinicName: clinicName });
-    if (!isClinic) {
-      await db.set(Clinics, clinic);
-    }
-
-    await db.update(Users, "clinicId", email, clinic._id.toString());
-    return res
-      .status(200)
-      .json({ message: "Clinic details received successfully" });
+    const hash = await hashPassowrd(password);
+    const user: UserAccount = {
+      email: email,
+      password: hash,
+      type: type,
+      registrationDetails: registrationDetails,
+      clinicDetail: clinic
+    };
+    await db.set(Users, user); //need to fix this to be able to handle gps in the future.
+    res.status(200);
+    res.send({
+      Message: `User with email ${email} has been successfully created`,
+    });
   } catch (err: any) {
     console.log(err.message);
     res

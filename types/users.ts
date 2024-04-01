@@ -6,7 +6,8 @@ export type UserAccount = {
     email: string,
     password: string,
     type: UserTypes,
-    registrationDetails: specialistRegistration
+    registrationDetails: specialistRegistration,
+    clinicDetail: Clinic
 }
 export type UserPayload = {
     id: string,
