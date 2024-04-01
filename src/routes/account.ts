@@ -38,31 +38,6 @@ router.post("/register", async (req, res) => {
     return;
   }
 
-  const clinic: Clinic = {
-    _id: new mongoose.Types.ObjectId(),
-    clinicName: clinicDetails.clinicName,
-    clinicCountry: clinicDetails.clinicCountry,
-    clinicSuburb: clinicDetails.clinicSuburb,
-    clinicOnCallNumber: clinicDetails.clinicOnCallNumber,
-  };
-
-  try {
-    const isClinic = await db.exists(Clinics, { clinicName: clinicDetails.clinicName });
-    if (!isClinic) {
-      await db.set(Clinics, clinic);
-    }
-
-    await db.update(Users, "clinicId", email, clinic._id.toString());
-  } catch (err: any) {
-    console.log(err.message);
-    res
-      .status(400)
-      .json({
-        error: true,
-        message: `Unable to store account due to ${err.message}`,
-      });
-  }
-
   try {
     const hash = await hashPassowrd(password);
     const user: UserAccount = {
@@ -70,7 +45,7 @@ router.post("/register", async (req, res) => {
       password: hash,
       type: type,
       registrationDetails: registrationDetails,
-      clinicDetail: clinic
+      clinicDetail: clinicDetails
     };
     await db.set(Users, user); //need to fix this to be able to handle gps in the future.
     res.status(200);

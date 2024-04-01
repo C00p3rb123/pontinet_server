@@ -8,6 +8,7 @@ interface User extends Document {
     type: userType;
     clinicId: string;
     registrationDetails: specialistRegistration
+    clinicDetails: Clinic
   }
 const UserSchema = new mongoose.Schema<User>({
     email: {type: String},
@@ -22,8 +23,13 @@ const UserSchema = new mongoose.Schema<User>({
       registrationId: {type: String},
       registrationCouncil: {type: String},
       mobileNumber: {type: Number}
+    },
+    clinicDetails: {
+      clinicName: {type: String},
+      clinicCountry: {type: String},
+      clinicCity: {type: String},
+      clinicSuburb: {type: String}
     }
-
     
 }, {timestamps: true})
 
