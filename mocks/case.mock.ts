@@ -1,5 +1,5 @@
-import { Case } from "../types/cases"
-export const mockCase: Case = {
+
+export const mockCase = {
     paitentInformation: {
         name: "Person 1",
         age: 18,

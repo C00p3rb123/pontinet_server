@@ -1,11 +1,9 @@
 import mongoose, {Document, Types} from "mongoose";
-import { DischargeInstructions, GeneralInstructions, PaitentInformation } from "../../../types/cases";
+import { DischargeInstructions, GeneralInstructions, PaitentInformation, SpecialisationResponse } from "../../../types/cases";
 
 interface Case extends Document {
-    paitentInformation: PaitentInformation;    
-    generalInstructions: GeneralInstructions;
-    dischargeInstructions: DischargeInstructions;
-    sepcialist: string;
+    paitentInformation: PaitentInformation;  
+    specialistResponse: SpecialisationResponse;
   }
 
   const caseSchema = new mongoose.Schema<Case>({
@@ -16,11 +14,12 @@ interface Case extends Document {
       clinic: {type: String},
       referalDate: {type: String}
     },
-    generalInstructions: {
-      
-    }, 
-    dischargeInstructions: {type: Object},
-    sepcialist: {type: String}
+    specialistResponse: {
+      generalInstructions: {type: Object}, 
+      dischargeInstructions: {type: Object},
+      specialist: {type: String}
+    },    
+    
 }, {timestamps: true})
 
 export default mongoose.model("Cases", caseSchema)

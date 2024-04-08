@@ -58,12 +58,17 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
  * @returns a document with specified fields defined by output 
  */
 
-  async getOne<T extends Document>(model: Model<T>, query: Object, output: string ): Promise<any>{
+  async getOne<T extends Document>(model: Model<T>, query: Object, output?: string ): Promise<any>{
     
-    if(!model || !query){
+    if(!model || !query){ //TODO UPDATE OUTPUT HANDLING
       throw new Error("Model, key or value is invalid in getDocument");
     }
     try{
+
+      if(!output){
+        const document:any = await model.findOne(query);
+        return document._doc;
+      }
       const document:any = await model.findOne(query).select(output).exec();
       if(!document){
         throw new Error('Invalid request')
@@ -114,8 +119,8 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
 
   }
   //model, attribute, query
-  async update<T extends Document>(model: Model<T>, attribute: keyof T, query: Object, newData: T[keyof T] ): Promise<void>{
-    if(!model || !attribute || !query|| !newData){
+  async update<T extends Document>(model: Model<T>, attributes: (keyof T)[], query: Object, newData: T[keyof T]): Promise<void>{
+    if(!model || !attributes || !query|| !newData){
       throw new Error(`update missing parameters`)
     }
     try{
@@ -123,10 +128,12 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
       if(!document){
         throw new Error(`No document found in update`)
       } 
-      (document as any)[attribute] = newData;
-      await document.save();
-      console.log(`User has successfully updated their registrationDetails`);
-    }catch (err: any) {
+      attributes.forEach( async (attribute) => {
+        (document as any)[attribute] = newData;
+        await document.save();
+        console.log(`User has successfully updated their registrationDetails`);
+        })
+      }catch (err: any) {
       console.log(err.message)
     }
   }

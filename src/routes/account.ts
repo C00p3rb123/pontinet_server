@@ -99,7 +99,7 @@ router.post("/register/clinic-details", verifyToken, async (req, res) => {
       await db.set(Clinics, clinic);
     }
 
-    await db.update(Users, "clinicId", email, clinic._id.toString());
+    await db.update(Users, ["clinicId"], email, clinic._id.toString());
     return res
       .status(200)
       .json({ message: "Clinic details received successfully" });
@@ -139,13 +139,30 @@ router.post("/login", async (req, res) => {
       return;
     }
     const token = await generateToken(email);
-    res.status(200).send(({ token: `${token}` }))
+    res.status(200).send(({ token: `${token}`}))
 
   }catch(err){
     res.status(400).json({ error: true, message: "Invalid email or password" });
     return;
   }
 
-});
+}
+);
+router.get("/user", verifyToken,async (req: any, res) => {
+   const userId = req.user.sub!;
+   if(!userId){
+    res.status(400).json({ error: true, message: "User does not exist" });
+   }
+  try{
+    const user = await db.getOne(Users, {_id: userId}, "registrationDetails");
+    res.status(200).send(({name: user.registrationDetails.name}))
+
+  }catch(err){
+    res.status(400).json({ error: true, message: "Unable to find user" });
+    return;
+  }
+
+}
+);
 
 export default router;

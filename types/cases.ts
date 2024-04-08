@@ -27,11 +27,13 @@ export type PaitentInformation = {
     referalDate: string;
 }
 
-export type Case = {
-    generalInstructions: GeneralInstructions,
-    dischargeInstructions: DischargeInstructions,
-    paitentInformation: PaitentInformation
-}
+
 export type InitialCase= {
     paitentInformation: PaitentInformation
 }
+export type SpecialisationResponse = {
+    generalInstructions: GeneralInstructions,
+    dischargeInstructions: DischargeInstructions,
+    specialist: string
+}
+export type Case = InitialCase & SpecialisationResponse
