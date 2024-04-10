@@ -18,7 +18,9 @@ router.use(express.json());
 router.post("/medical-professional/user/register", async (req, res) => {
   const { email, password, type, registrationDetails, clinicDetails } = req.body;
 
-  if (!email || !password || !type || !registrationDetails || !clinicDetails) {
+  if (!email || !password || !type || !registrationDetails || !clinicDetails.clinicName) {
+    console.error(`Request body incomplete, email, password, type, registration and clinic details are required`)
+
     res
       .status(400)
       .json({
