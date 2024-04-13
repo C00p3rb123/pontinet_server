@@ -6,7 +6,8 @@ export type UserAccount = {
     email: string,
     password: string,
     type: UserTypes,
-    registrationDetails: specialistRegistration
+    registrationDetails: specialistRegistration,
+    clinicDetails: Clinic
 }
 export type UserPayload = {
     id: string,
@@ -26,11 +27,9 @@ export type specialistRegistration = {
 }
 
 export type Clinic = {
-    _id: Types.ObjectId
     clinicName: string,
     clinicCountry: string,
     clinicSuburb: string,
-    clinicOnCallNumber: number
 }
 
 export type userType = UserTypes.GP | UserTypes.SP 
