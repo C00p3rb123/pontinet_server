@@ -1,6 +1,6 @@
 import { Case } from "../types/cases"
 export const mockCase: Case = {
-    paitentInformation: {
+    patientInformation: {
         name: "Person 1",
         age: 18,
         description: "Lower leg broken",

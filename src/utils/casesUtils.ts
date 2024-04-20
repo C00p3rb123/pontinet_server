@@ -8,11 +8,11 @@ const jsonString = JSON.stringify(spCaseResponse, null, 2);
 const text = 
 `PONTINET SPECIALIST RESPONSE\n\n
 Personal Information:\n
-- Age: ${spCaseResponse.paitentInformation.age}\n
-- Description: ${spCaseResponse.paitentInformation.illnessDescription}\n
-- GP: ${spCaseResponse.paitentInformation.gp}\n
-- Clinic : ${spCaseResponse.paitentInformation.clinic}\n
-- Regeral Date: ${spCaseResponse.paitentInformation.referalDate}\n\n
+- Age: ${spCaseResponse.patientInformation.age}\n
+- Description: ${spCaseResponse.patientInformation.illnessDescription}\n
+- GP: ${spCaseResponse.patientInformation.gp}\n
+- Clinic : ${spCaseResponse.patientInformation.clinic}\n
+- Regeral Date: ${spCaseResponse.patientInformation.referalDate}\n\n
 General Instructions:\n
 - Diagnostic Impression: ${spCaseResponse.generalInstructions.diagnosticImpression}\n\n
 Discharge Instructions: \n
