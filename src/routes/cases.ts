@@ -20,7 +20,7 @@ router.post("/send", verifyToken,  async (req, res) => {
     console.log(spCase);
     const spResponse = {
         caseName: "Test case",
-        patientInformation: spCase.patientInformation,
+        paitentInformation: spCase.paitentInformation,
         generalInstructions: spCase.generalInstructions,
         dischargeInstructions: spCase.dischargeInstructions,
         specialist: `Dr Jonathan Chernilo`

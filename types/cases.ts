@@ -19,7 +19,7 @@ export type DischargeInstructions = {
     followUpDetails?: string
 }
 
-export type PatientInformation = {
+export type PaitentInformation = {
     age: number,  
     illnessDescription: illnessDescription,
     gp: string
@@ -30,8 +30,8 @@ export type PatientInformation = {
 export type Case = {
     generalInstructions: GeneralInstructions,
     dischargeInstructions: DischargeInstructions,
-    patientInformation: PatientInformation
+    paitentInformation: PaitentInformation
 }
 export type InitialCase= {
-    patientInformation: PatientInformation
+    paitentInformation: PaitentInformation
 }

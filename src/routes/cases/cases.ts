@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv"
 import morgan from "morgan";
 import db from "../../database/db";
-import { Case, PatientInformation } from "../../../types/cases";
+import { Case, PaitentInformation } from "../../../types/cases";
 import { createDocument, sendWhatsApp } from "../../utils/casesUtils";
 import { mockCase } from "../../../mocks/case.mock";
 import Cases from "../../database/schemas/case"
@@ -21,7 +21,7 @@ router.post("/send", verifyToken,  async (req, res) => {
     console.log(spCase);
     const spResponse = {
         caseName: "Test case",
-        patientInformation: spCase.patientInformation,
+        paitentInformation: spCase.paitentInformation,
         generalInstructions: spCase.generalInstructions,
         dischargeInstructions: spCase.dischargeInstructions,
         specialist: `Dr Jonathan Chernilo`
@@ -41,9 +41,9 @@ router.post("/send", verifyToken,  async (req, res) => {
     }     
 })
 router.post("/recieve", verifyToken, async (req, res) =>{
-    const patientInformation: PatientInformation  = req.body;
+    const paitentInformation: PaitentInformation  = req.body;
     await db.set(Cases, {
-        patientInformation: patientInformation
+        paitentInformation: paitentInformation
     });
     res.status(200).send({
         "Message": "Received"
@@ -52,7 +52,7 @@ router.post("/recieve", verifyToken, async (req, res) =>{
 )
 router.get("/retrieve", verifyToken, async (req, res) => {
     try{
-        const newCases = await db.getMany(Cases, {sepcialist: {$exists: false}}, "patientInformation");
+        const newCases = await db.getMany(Cases, {sepcialist: {$exists: false}}, "paitentInformation");
         res.status(200).send(newCases)
     }catch(err: any){
         res.status(400).json({ "error": true, "message": `Unable to retrieve new cases due to ${err.message}` });
