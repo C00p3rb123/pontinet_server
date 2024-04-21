@@ -54,23 +54,23 @@ describe('POST /recieve', () => {
     });
 });
 
-// describe('GET /retrieve', () => {
+describe('GET /retrieve', () => {
     
-//     it('Return 200 status if retrieval was successful', async () => {
-//         const res = await request(app).get('/retrieve');
-//         expect(res.statusCode).toBe(200);
-//     });
+    it('Return 200 status if retrieval was successful', async () => {
+        const res = await request(app).get('/retrieve');
+        expect(res.statusCode).toBe(200);
+    });
 
-//     it('Return 400 if retrieval failed', async () => {
-//         const errorMessage = 'Test error';
-//         (db.getMany as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
+    it('Return 400 if retrieval failed', async () => {
+        const errorMessage = 'Test error';
+        (db.getMany as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
-//         const res = await request(app).get('/retrieve');
+        const res = await request(app).get('/retrieve');
 
-//         expect(res.statusCode).toBe(400);
-//         expect(res.body).toEqual({
-//         error: true,
-//         message: `Unable to retrieve new cases due to ${errorMessage}`,
-//         });
-//     });
-// });
+        expect(res.statusCode).toBe(400);
+        expect(res.body).toEqual({
+        error: true,
+        message: `Unable to retrieve new cases due to ${errorMessage}`,
+        });
+    });
+});
