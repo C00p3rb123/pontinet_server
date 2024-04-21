@@ -147,7 +147,7 @@ describe('hashPassword', () => {
         expect(result).toBe(hashedPassword);
     });
 
-    it('Call bcrypt.hash with the correct parameters', async () => {
+    it('Expect bcrypt.hash to be called with the correct parameters', async () => {
         const saltRounds = 10;
         await hashPassword(password);
         expect(bcrypt.hash).toHaveBeenCalledWith(password, saltRounds);
