@@ -102,7 +102,7 @@ describe('verifyPassword', () => {
     const password = 'password';
     const hashedPassword = 'hashedPassword';
 
-    it('Throw an error is not password is provided', async () => {
+    it('Throw an error if no password is provided', async () => {
         await expect(verifyPassword('', hashedPassword)).rejects.toThrow('verifyPassword is missing parameters');
     });
 
