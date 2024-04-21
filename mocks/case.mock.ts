@@ -1,12 +1,12 @@
 import { Case } from "../types/cases"
 export const mockCase: Case = {
-    paitentInformation: {
+    patientInformation: {
         name: "Person 1",
         age: 18,
         description: "Lower leg broken",
         gp: "Dr Tester",
         clinic: "Health Clinic",
-        referalDate: "19/10/2023",
+        referralDate: "19/10/2023",
         
     },
     generalInstructions: {
@@ -17,7 +17,7 @@ export const mockCase: Case = {
     dischargeInstructions: {
         generalIndications: `Elit mollit fugiat esse voluptate.`,
         medication: `Ex nulla ex consequat et laboris nulla anim.`,
-        referalDetails: `Do tempor in occaecat et quis voluptate.`,
+        referralDetails: `Do tempor in occaecat et quis voluptate.`,
         followUpDetails: `Eiusmod eu cupidatat voluptate ea sint.`
     }
 }
