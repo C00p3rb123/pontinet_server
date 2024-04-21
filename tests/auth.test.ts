@@ -123,11 +123,13 @@ describe('verifyPassword', () => {
     });
 
     it('Return false if an error occurs', async () => {
+        console.error = jest.fn();
         (bcrypt.compare as jest.Mock).mockImplementation(() => {
             throw new Error('An error occurred');
         });
         const result = await verifyPassword(password, hashedPassword);
         expect(result).toBe(false);
+        expect(console.error).toHaveBeenCalledWith('An error occurred');
     });
 });
 

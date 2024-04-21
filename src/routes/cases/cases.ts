@@ -32,7 +32,7 @@ router.post("/send", verifyToken,  async (req, res) => {
         await sendWhatsApp(text);
         res.status(200);
         res.send({
-            "Message": `WhatsApp messaage Sent`
+            "Message": `WhatsApp message Sent`
         })
 
     }catch(err: any){
