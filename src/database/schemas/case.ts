@@ -1,5 +1,5 @@
-import mongoose, {Document, Types} from "mongoose";
-import { DischargeInstructions, GeneralInstructions, PaitentInformation, SpecialisationResponse } from "../../../types/cases";
+import mongoose, {Document} from "mongoose";
+import { PaitentInformation, SpecialisationResponse } from "../../../types/cases";
 
 interface Case extends Document {
     paitentInformation: PaitentInformation;  
@@ -17,7 +17,8 @@ interface Case extends Document {
     specialistResponse: {
       generalInstructions: {type: Object}, 
       dischargeInstructions: {type: Object},
-      specialist: {type: String}
+      specialist: {type: Object},
+
     },    
     
 }, {timestamps: true})

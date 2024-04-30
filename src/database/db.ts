@@ -1,14 +1,6 @@
 
-import mongoose, { ConnectOptions, Model, Document, Types } from "mongoose";
+import mongoose, { Model, Document  } from "mongoose";
 import dotenv from "dotenv"
-import Users from "./schemas/user";
-import Clinics from "../database/schemas/clinic"
-import { error } from "console";
-import { Clinic,  specialistRegistration } from "../../types/users";
-import user from "./schemas/user";
-import { mode } from "crypto-js";
-import { Mode } from "fs";
-
 dotenv.config();
 
 interface PontinetDbConnection {

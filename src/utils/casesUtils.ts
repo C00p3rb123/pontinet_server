@@ -1,30 +1,30 @@
 import { Case } from "../../types/cases";
-import fs from "fs";
 import axios from "axios";
-import db from "../database/db";
-import Cases from "../database/schemas/case";
-export const createDocument = async (caseId: string) => {
+import { SpecialisationResponse } from "../../types/cases";
+
+export const createDocument = async (medicalCase: Case, specialistResponse: SpecialisationResponse) => {
   try {
-    const entireCase = await db.getOne(Cases, { _id: caseId });
-    // console.log(entireCase);
+  
+    
     const text = `PONTINET SPECIALIST RESPONSE\n\n
       Personal Information:\n
-      - Age: ${entireCase.paitentInformation.age}\n
-      - Description: ${entireCase.paitentInformation.illnessDescription.segment}\n${entireCase.paitentInformation.illnessDescription.mechanism}\n
-      - GP: ${entireCase.paitentInformation.gp}\n
-      - Regeral Date: ${entireCase.paitentInformation.referalDate}\n\n
+      - Age: ${medicalCase.paitentInformation.age}\n
+      - Description: ${medicalCase.paitentInformation.illnessDescription.segment}\n${medicalCase.paitentInformation.illnessDescription.mechanism}\n
+      - GP: ${medicalCase.paitentInformation.gp}\n
+      - Regeral Date: ${medicalCase.paitentInformation.referalDate}\n\n
       General Instructions:\n
-      - Diagnostic Impression: ${entireCase.specialistResponse.generalInstructions.diagnosticImpression}\n\n
-      - On site procedure: ${entireCase.specialistResponse.generalInstructions.onSiteProcedure}\n\n
-      - On site medication: ${entireCase.specialistResponse.generalInstructions.onSiteMedication}\n\n
+      - Diagnostic Impression: ${specialistResponse.generalInstructions.diagnosticImpression}\n\n
+      - On site procedure: ${specialistResponse.generalInstructions.onSiteProcedure}\n\n
+      - On site medication: ${specialistResponse.generalInstructions.onSiteMedication}\n\n
       Discharge Instructions: \n
-      - General Indications: ${entireCase.specialistResponse.dischargeInstructions.generalIndications}\n
-      - Medication: ${entireCase.specialistResponse.dischargeInstructions.medication}\n
-      - Follow Up: ${entireCase.specialistResponse.dischargeInstructions.followUpDetails}\n
+      - General Indications: ${specialistResponse.dischargeInstructions.generalIndications}\n
+      - Medication: ${specialistResponse.dischargeInstructions.medication}\n
+      - Follow Up: ${specialistResponse.dischargeInstructions.followUpDetails}\n
       `;
     return text;
   } catch (err: any) {
-    throw new Error(`Unable to set up text to be sent to GP`);
+    console.log(err)
+    throw new Error(err.messaage);
   }
 };
 
