@@ -15,23 +15,23 @@ export type GeneralInstructions = {
 export type DischargeInstructions = {
     generalIndications: string,
     medication?: string,
-    referalDetails?: string,
+    referralDetails?: string,
     followUpDetails?: string
 }
 
-export type PaitentInformation = {
+export type PatientInformation = {
     age: number,  
     illnessDescription: illnessDescription,
     gp: string
     clinic?: string
-    referalDate: string;
+    referralDate: string;
 }
 
 export type Case = {
     generalInstructions: GeneralInstructions,
     dischargeInstructions: DischargeInstructions,
-    paitentInformation: PaitentInformation
+    patientInformation: PatientInformation
 }
 export type InitialCase= {
-    paitentInformation: PaitentInformation
+    patientInformation: PatientInformation
 }

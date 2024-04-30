@@ -53,7 +53,7 @@ export const verifyPassword = async (
   }
 };
 
-export const hashPassowrd = async (password: string): Promise<string> => {
+export const hashPassword = async (password: string): Promise<string> => {
     const saltRounds = 10;
     if (!password) {
       throw new Error("Password unable to be stored");
