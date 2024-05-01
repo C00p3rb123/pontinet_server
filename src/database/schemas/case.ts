@@ -2,17 +2,17 @@ import mongoose, {Document} from "mongoose";
 import { PaitentInformation, SpecialisationResponse } from "../../../types/cases";
 
 interface Case extends Document {
-    paitentInformation: PaitentInformation;  
+    patientInformation: PatientInformation;  
     specialistResponse: SpecialisationResponse;
   }
 
   const caseSchema = new mongoose.Schema<Case>({
-    paitentInformation: {
+    patientInformation: {
       age: {type: Number},  
       illnessDescription: {type: Object},
       gp: {type: String},
       clinic: {type: String},
-      referalDate: {type: String}
+      referralDate: {type: String}
     },
     specialistResponse: {
       generalInstructions: {type: Object}, 

@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import db from "../../database/db";
-import { PaitentInformation } from "../../../types/cases";
+import { Case, PatientInformation } from "../../../types/cases";
 import { createDocument, sendWhatsApp } from "../../utils/casesUtils";
 import { mockCase } from "../../../mocks/case.mock";
 import Cases from "../../database/schemas/case";
@@ -43,9 +43,9 @@ router.post("/send", verifyToken, async (req: any, res) => {
   }
 });
 router.post("/recieve", verifyToken, async (req, res) => {
-  const paitentInformation: PaitentInformation = req.body;
+  const patientInformation: PatientInformation = req.body;
   await db.set(Cases, {
-    paitentInformation: paitentInformation,
+    patientInformation: patientInformation,
   });
   res.status(200).send({
     Message: "Received",

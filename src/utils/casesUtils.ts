@@ -8,10 +8,10 @@ export const createDocument = async (medicalCase: Case, specialistResponse: Spec
     
     const text = `PONTINET SPECIALIST RESPONSE\n\n
       Personal Information:\n
-      - Age: ${medicalCase.paitentInformation.age}\n
-      - Description: ${medicalCase.paitentInformation.illnessDescription.segment}\n${medicalCase.paitentInformation.illnessDescription.mechanism}\n
-      - GP: ${medicalCase.paitentInformation.gp}\n
-      - Regeral Date: ${medicalCase.paitentInformation.referalDate}\n\n
+      - Age: ${medicalCase.patientInformation.age}\n
+      - Description: ${medicalCase.patientInformation.illnessDescription.segment}\n${medicalCase.patientInformation.illnessDescription.mechanism}\n
+      - GP: ${medicalCase.patientInformation.gp}\n
+      - Regeral Date: ${medicalCase.patientInformation.referralDate}\n\n
       General Instructions:\n
       - Diagnostic Impression: ${specialistResponse.generalInstructions.diagnosticImpression}\n\n
       - On site procedure: ${specialistResponse.generalInstructions.onSiteProcedure}\n\n

@@ -4,7 +4,7 @@ import morgan from "morgan";
 import db from "../database/db";
 import {
   generateToken,
-  hashPassowrd,
+  hashPassword,
   verifyPassword,
 } from "../utils/auth";
 import Users from "../database/schemas/user";
@@ -39,7 +39,7 @@ router.post("/medical-professional/user/register", async (req, res) => {
   }
 
   try {
-    const hash = await hashPassowrd(password);
+    const hash = await hashPassword(password);
     const user: UserAccount = {
       email: email,
       password: hash,

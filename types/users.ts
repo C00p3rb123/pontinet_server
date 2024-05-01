@@ -29,6 +29,7 @@ export type specialistRegistration = {
 export type Clinic = {
     clinicName: string,
     clinicCountry: string,
+    clinicState: string,
     clinicSuburb: string,
 }
 
