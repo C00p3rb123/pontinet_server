@@ -1,5 +1,5 @@
 import mongoose, {Document} from "mongoose";
-import { PaitentInformation, SpecialisationResponse } from "../../../types/cases";
+import { PatientInformation, SpecialisationResponse } from "../../../types/cases";
 
 interface Case extends Document {
     patientInformation: PatientInformation;  
