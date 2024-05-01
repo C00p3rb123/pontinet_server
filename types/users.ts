@@ -33,6 +33,8 @@ export type Clinic = {
     clinicSuburb: string,
 }
 
+
+
 export type userType = UserTypes.GP | UserTypes.SP 
 
 export enum UserTypes  {
@@ -40,4 +42,6 @@ export enum UserTypes  {
     SP = "Specialist",
     ADMIN = "Admin",
 }
+
+
 

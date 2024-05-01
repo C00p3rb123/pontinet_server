@@ -9,14 +9,16 @@ export type illnessDescription ={
 export type GeneralInstructions = {
     diagnosticImpression: string,
     onSiteProcedure?: string,
-    onSiteMedication?: string
+    onSiteMedication?: string,
+    other: string
 }
 
 export type DischargeInstructions = {
     generalIndications: string,
     medication?: string,
     referralDetails?: string,
-    followUpDetails?: string
+    followUpDetails?: string,
+    other: string,
 }
 
 export type PatientInformation = {
@@ -35,3 +37,14 @@ export type Case = {
 export type InitialCase= {
     patientInformation: PatientInformation
 }
+
+export type SpecialistInfo = {
+    id: string,
+    name: string
+}
+export type SpecialisationResponse = {
+    generalInstructions: GeneralInstructions,
+    dischargeInstructions: DischargeInstructions,
+    specialist: SpecialistInfo
+}
+export type Case = InitialCase & SpecialisationResponse

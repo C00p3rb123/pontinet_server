@@ -9,6 +9,7 @@ import {
 } from "../utils/auth";
 import Users from "../database/schemas/user";
 import {UserAccount } from "../../types/users";
+import { verifyToken } from "../utils/auth";
 
 const router = express.Router();
 router.use(express.json());
@@ -87,13 +88,30 @@ router.post("/login", async (req, res) => {
       return;
     }
     const token = await generateToken(email);
-    res.status(200).send(({ token: `${token}` }))
+    res.status(200).send(({ token: `${token}`}))
 
   }catch(err){
     res.status(400).json({ error: true, message: "Invalid email or password" });
     return;
   }
 
-});
+}
+);
+router.get("/user", verifyToken,async (req: any, res) => {
+   const userId = req.user.sub!;
+   if(!userId){
+    res.status(400).json({ error: true, message: "User does not exist" });
+   }
+  try{
+    const user = await db.getOne(Users, {_id: userId}, "registrationDetails clinicDetails");
+    res.status(200).send(({name: user.registrationDetails.name, clinic: user.clinicDetails.clinicName, country: user.clinicDetails.clinicCountry}))
+
+  }catch(err){
+    res.status(400).json({ error: true, message: "Unable to find user" });
+    return;
+  }
+
+}
+);
 
 export default router;
