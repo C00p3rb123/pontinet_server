@@ -1,13 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import db from "../../database/db";
-import { Case, PatientInformation } from "../../../types/cases";
-import { createDocument, sendWhatsApp } from "../../utils/casesUtils";
-import { mockCase } from "../../../mocks/case.mock";
-import Cases from "../../database/schemas/case";
+import db from "../database/db";
+import { Case, PatientInformation } from "../../types/cases";
+import { createDocument, sendWhatsApp } from "../utils/casesUtils";
+import { mockCase } from "../../mocks/case.mock";
+import Cases from "../database/schemas/caseSchema";
 import { mock } from "node:test";
-import { verifyToken } from "../../utils/auth";
+import { verifyToken } from "../utils/auth";
 
 const router = express.Router();
 router.use(express.json());

@@ -28,12 +28,6 @@ export type PatientInformation = {
     clinic?: string
     referralDate: string;
 }
-
-export type Case = {
-    generalInstructions: GeneralInstructions,
-    dischargeInstructions: DischargeInstructions,
-    patientInformation: PatientInformation
-}
 export type InitialCase= {
     patientInformation: PatientInformation
 }

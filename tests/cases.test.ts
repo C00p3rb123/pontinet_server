@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from 'body-parser';
 import request from "supertest";
 import db from "../src/database/db";
-import router from "../src/routes/cases/cases"
+import router from "../src/routes/cases"
 import mongoose from "mongoose";
 import { PatientInformation } from "../types/cases";
 import { verifyToken } from "../src/utils/auth";

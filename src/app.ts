@@ -4,7 +4,7 @@ import morgan from "morgan";
 import swaggerjsdoc from "swagger-jsdoc";
 import swaggerUI = require("swagger-ui-express");
 import accountRouter from "./routes/account"
-import caseRouter from "./routes/cases/cases"
+import caseRouter from "./routes/cases"
 import cors from "cors"; 
 
 

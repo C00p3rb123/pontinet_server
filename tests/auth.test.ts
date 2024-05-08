@@ -1,6 +1,6 @@
 import { generateToken, verifyToken, verifyPassword, hashPassword } from '../src/utils/auth';
 import db from '../src/database/db';
-import Users from '../src/database/schemas/user';
+import Users from '../src/database/schemas/userSchema';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
