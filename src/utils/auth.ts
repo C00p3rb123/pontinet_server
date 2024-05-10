@@ -1,5 +1,5 @@
 import db from "../database/db";
-import Users from "../database/schemas/user"
+import Users from "../database/schemas/userSchema"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt";
 /**

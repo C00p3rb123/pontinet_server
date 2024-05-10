@@ -7,7 +7,7 @@ import {
   hashPassword,
   verifyPassword,
 } from "../utils/auth";
-import Users from "../database/schemas/user";
+import Users from "../database/schemas/userSchema";
 import {UserAccount } from "../../types/users";
 import { verifyToken } from "../utils/auth";
 
