@@ -62,14 +62,16 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
       throw new Error("Model, key or value is invalid in getDocument");
     }
     try{
-
       if(!output){
         const document:any = await model.findOne(query);
+        if(!document){
+          return null
+        }
         return document._doc;
       }
       const document:any = await model.findOne(query).select(output).exec();
       if(!document){
-        throw new Error('Invalid request')
+        return null
       }
       return document._doc
       
@@ -113,6 +115,7 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
     }
     catch (err: any){
       console.log(err.message)
+      throw new Error(err.message);
     }   
 
   }
@@ -133,6 +136,7 @@ class PontinetMongoDBConnection implements PontinetDbConnection {
         })
       }catch (err: any) {
       console.log(err.message)
+      throw new Error(err.message);
     }
   }
   async exists<T extends Document>(model: Model<T>, query: Object ){

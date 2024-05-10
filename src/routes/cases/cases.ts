@@ -19,6 +19,8 @@ router.post("/send", verifyToken, async (req: any, res) => {
   try {
     const medicalCase = await db.getOne(Cases, {
       _id: specialistResponse.id,
+      specialistResponse: { $exists: false },
+      
     });
     if (!medicalCase) {
       throw new Error(
