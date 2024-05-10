@@ -25,8 +25,7 @@ export type PatientInformation = {
     age: number,  
     illnessDescription: illnessDescription,
     gp: string
-    clinic?: string
-    referralDate: string;
+    clinic?: string    
 }
 export type InitialCase= {
     patientInformation: PatientInformation
@@ -39,6 +38,7 @@ export type SpecialistInfo = {
 export type SpecialisationResponse = {
     generalInstructions: GeneralInstructions,
     dischargeInstructions: DischargeInstructions,
-    specialist: SpecialistInfo
+    specialist: SpecialistInfo,
+    createdAt: string;
 }
 export type Case = InitialCase & SpecialisationResponse

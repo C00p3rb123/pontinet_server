@@ -26,6 +26,7 @@ router.post("/send", verifyToken, async (req: any, res) => {
       );
     }
     delete specialistResponse.id;
+    
     specialistResponse.specialist = {
         ...specialistResponse.specialist,
         id: req.user.sub!
@@ -42,7 +43,7 @@ router.post("/send", verifyToken, async (req: any, res) => {
     res.status(400).json({ error: true, message: `${err.message}` });
   }
 });
-router.post("/recieve", verifyToken, async (req, res) => {
+router.post("/recieve", async (req, res) => {
   const patientInformation: PatientInformation = req.body;
   await db.set(Cases, {
     patientInformation: patientInformation,

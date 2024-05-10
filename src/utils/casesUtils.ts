@@ -11,7 +11,7 @@ export const createDocument = async (medicalCase: Case, specialistResponse: Spec
       - Age: ${medicalCase.patientInformation.age}\n
       - Description: ${medicalCase.patientInformation.illnessDescription.segment}\n${medicalCase.patientInformation.illnessDescription.mechanism}\n
       - GP: ${medicalCase.patientInformation.gp}\n
-      - Regeral Date: ${medicalCase.patientInformation.referralDate}\n\n
+      - Referral Date: ${medicalCase.createdAt}\n\n
       General Instructions:\n
       - Diagnostic Impression: ${specialistResponse.generalInstructions.diagnosticImpression}\n\n
       - On site procedure: ${specialistResponse.generalInstructions.onSiteProcedure}\n\n
