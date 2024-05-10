@@ -33,7 +33,7 @@ router.post("/send", verifyToken, async (req: any, res) => {
         id: req.user.sub!
     }
     const text = await createDocument(medicalCase, specialistResponse);
-    // await sendWhatsApp(text);
+    await sendWhatsApp(text);
     await db.update(Cases, [`specialistResponse`], medicalCase._id, specialistResponse);    
     res.status(200);
     res.send({
