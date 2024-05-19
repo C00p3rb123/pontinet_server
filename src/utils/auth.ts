@@ -21,7 +21,13 @@ export const generateToken = async (email: string): Promise<string> => {
     const token = jwt.sign(payload, process.env.SECRET!, {expiresIn: '1d'})
     return token
 }
-
+/**
+ * Middleware to verify JWT token.
+ * @param {any} req - The request object.
+ * @param {any} res - The response object.
+ * @param {any} next - The next middleware function.
+ * @returns {void}
+ */
 export const verifyToken = (req: any, res: any, next: any) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader.split(" ")[1];
@@ -36,7 +42,13 @@ export const verifyToken = (req: any, res: any, next: any) => {
     return res.status(403).json({ message: 'Invalid token.' });
   }
 } 
-
+/**
+ * Verifies if the provided password matches the hashed password.
+ * @param {string} password - The plain text password.
+ * @param {string} hashedPassword - The hashed password.
+ * @returns {Promise<boolean>} - True if passwords match, false otherwise.
+ * @throws {Error} - If parameters are missing or an error occurs during comparison.
+ */
 export const verifyPassword = async (
   password: string,
   hashedPassword: string
@@ -52,7 +64,12 @@ export const verifyPassword = async (
     return false
   }
 };
-
+/**
+ * Hashes the provided password.
+ * @param {string} password - The plain text password.
+ * @returns {Promise<string>} - The hashed password.
+ * @throws {Error} - If password is not provided.
+ */
 export const hashPassword = async (password: string): Promise<string> => {
     const saltRounds = 10;
     if (!password) {

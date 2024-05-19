@@ -2,7 +2,13 @@ import { Case } from "../../types/cases";
 import axios from "axios";
 import { SpecialisationResponse } from "../../types/cases";
 import crypto from "crypto"
-
+/**
+ * Creates a document with specialist response details.
+ * @param {Case} medicalCase - The medical case details.
+ * @param {SpecialisationResponse} specialistResponse - The specialist's response details.
+ * @returns {Promise<string>} - The formatted text document as a string.
+ * @throws {Error} - If an error occurs during the creation of the document.
+ */
 export const createDocument = async (medicalCase: Case, specialistResponse: SpecialisationResponse) => {
   try {
   
@@ -28,7 +34,10 @@ export const createDocument = async (medicalCase: Case, specialistResponse: Spec
     throw new Error(err.messaage);
   }
 };
-
+/**
+ * Sends a WhatsApp message with the provided text.
+ * @param {string} text - The text message to send.
+ */
 export const sendWhatsApp = (text: string, mobile: string) => {
   const url = `https://graph.facebook.com/v18.0/${process.env.WHATSAPP_SENDER}/messages`;
   const accessToken = process.env.WHATSAPP_ACCESS;
