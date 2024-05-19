@@ -24,10 +24,13 @@ export type DischargeInstructions = {
 export type PatientInformation = {
     age: number,  
     illnessDescription: illnessDescription,
-    gp: string
+    gp: string,
+    gpMobile: string
+    extraInformation?: string
     clinic?: string    
 }
 export type InitialCase= {
+    _id: string,
     patientInformation: PatientInformation
 }
 

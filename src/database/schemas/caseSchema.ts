@@ -11,14 +11,14 @@ interface Case extends Document {
       age: {type: Number},  
       illnessDescription: {type: Object},
       gp: {type: String},
+      gpMobile: {type: Number},
+      extraInformation: {type: String},
       clinic: {type: String},
-      referralDate: {type: String}
     },
     specialistResponse: {
       generalInstructions: {type: Object}, 
       dischargeInstructions: {type: Object},
       specialist: {type: Object},
-
     },    
     
 }, {timestamps: true})

@@ -1,6 +1,7 @@
 import { Case } from "../../types/cases";
 import axios from "axios";
 import { SpecialisationResponse } from "../../types/cases";
+import crypto from "crypto"
 
 export const createDocument = async (medicalCase: Case, specialistResponse: SpecialisationResponse) => {
   try {
@@ -28,10 +29,10 @@ export const createDocument = async (medicalCase: Case, specialistResponse: Spec
   }
 };
 
-export const sendWhatsApp = (text: string) => {
+export const sendWhatsApp = (text: string, mobile: string) => {
   const url = `https://graph.facebook.com/v18.0/${process.env.WHATSAPP_SENDER}/messages`;
   const accessToken = process.env.WHATSAPP_ACCESS;
-  const phoneNumber = process.env.MOBILE;
+  const phoneNumber = mobile;
   const messageContent = text;
 
   const requestBody = {
@@ -57,8 +58,36 @@ export const sendWhatsApp = (text: string) => {
     })
     .catch((error) => {
       console.error("Error:", error.message);
-
-      console.log("Registration");
     });
   console.log(text);
 };
+
+//Please keep in mind the following encryption and decryption functions are designed to handle sendPulse documentation only.  
+// Function to encrypt an image URI
+const secret = process.env.DOCUMENT_SECRET!;
+export const encryptImage = (uri: string): string => {
+  const algorithm = "aes-256-cbc";
+  const iv = crypto.randomBytes(16); // Generate IV once
+  const key = crypto.scryptSync(secret, 'salt', 32);
+  const cipher = crypto.createCipheriv(algorithm, key, iv);
+
+  let encrypted = cipher.update(uri, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+
+  // Prepend IV to the encrypted data
+  const encryptedDataWithIV = iv.toString('hex') + encrypted;
+  return encryptedDataWithIV;
+}
+export const decryptImage = (encryptedText: string): string => {
+  const algorithm = "aes-256-cbc";
+  const iv = Buffer.from(encryptedText.slice(0, 32), 'hex'); // Extract IV from the encrypted text
+  const encryptedData = encryptedText.slice(32); // Extract encrypted data
+
+  const key = crypto.scryptSync(secret, 'salt', 32);
+  const decipher = crypto.createDecipheriv(algorithm, key, iv);
+
+  let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+  
+  return decrypted;
+}
