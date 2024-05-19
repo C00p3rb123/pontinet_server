@@ -1,11 +1,16 @@
 import mongoose, {Document} from "mongoose";
 import { PatientInformation, SpecialisationResponse } from "../../../types/cases";
-
+/**
+ * Interface for a Case document.
+ * Extends the Mongoose Document interface.
+ */
 interface Case extends Document {
     patientInformation: PatientInformation;  
     specialistResponse: SpecialisationResponse;
   }
-
+/**
+ * Mongoose schema for a Case document.
+ */
   const caseSchema = new mongoose.Schema<Case>({
     patientInformation: {
       age: {type: Number},  
@@ -21,7 +26,10 @@ interface Case extends Document {
 
     },    
     
-}, {timestamps: true})
+}, {timestamps: true}) //// Automatically adds createdAt and updatedAt fields
 
+/**
+ * Mongoose model for the Case schema.
+ */
 export default mongoose.model("Cases", caseSchema)
   
