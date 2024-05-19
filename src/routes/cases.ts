@@ -2,12 +2,13 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import db from "../database/db";
-import { Case, PatientInformation } from "../../types/cases";
-import { createDocument, sendWhatsApp } from "../utils/casesUtils";
+import { Case, InitialCase, PatientInformation } from "../../types/cases";
+import { createDocument, sendWhatsApp, encryptImage, decryptImage } from "../utils/casesUtils";
 import { mockCase } from "../../mocks/case.mock";
 import Cases from "../database/schemas/caseSchema";
 import { mock } from "node:test";
 import { verifyToken } from "../utils/auth";
+import crypto from "crypto"
 
 const router = express.Router();
 router.use(express.json());
@@ -27,6 +28,8 @@ router.post("/send", verifyToken, async (req: any, res) => {
       specialistResponse: { $exists: false },
       
     });
+    const mobile = medicalCase.patientInformation.gpMobile
+
     if (!medicalCase) {
       throw new Error(
         `This case either does not exist or has already been answered.`
@@ -34,13 +37,14 @@ router.post("/send", verifyToken, async (req: any, res) => {
     }
     // Prepare the specialist response
     delete specialistResponse.id;
+    
     specialistResponse.specialist = {
         ...specialistResponse.specialist,
         id: req.user.sub!
     }
     // Create document and send WhatsApp message
     const text = await createDocument(medicalCase, specialistResponse);
-    await sendWhatsApp(text);
+    await sendWhatsApp(text, mobile);
     // Update the case in the database
     await db.update(Cases, [`specialistResponse`], medicalCase._id, specialistResponse);    
     res.status(200);
@@ -57,8 +61,19 @@ router.post("/send", verifyToken, async (req: any, res) => {
  * This endpoint is called by the chatbot when a new case is created.
  * It verifies the token and stores the patient information in the database.
  */
-router.post("/recieve", verifyToken, async (req, res) => {
-  const patientInformation: PatientInformation = req.body;
+router.post("/recieve", async (req, res) => {
+  let patientInformation: PatientInformation = req.body;
+  if(patientInformation.extraInformation){
+
+    const encryptedUrl = patientInformation.extraInformation.replace(/([&?])(message_id|id)=([^&]+)/g, (match, connector, param, value) => {
+      const encryptedValue = encryptImage(value);
+      return `${connector}${param}=${encryptedValue}`;
+  });
+    patientInformation = {
+      ...patientInformation,
+      extraInformation: encryptedUrl      
+    }
+  }
   await db.set(Cases, {
     patientInformation: patientInformation,
   });
@@ -76,6 +91,18 @@ router.get("/retrieve", verifyToken, async (req, res) => {
       Cases,
       { specialistResponse: { $exists: false }},
     );
+    newCases.map((medicalCase: InitialCase) => {
+      if(medicalCase.patientInformation.extraInformation){
+        const decryptedUrl = medicalCase.patientInformation.extraInformation.replace(/([&?])(message_id|id)=([^&]+)/g, (match, connector, param, encryptedValue) => {
+          const decryptedValue = decryptImage(encryptedValue);
+          return `${connector}${param}=${decryptedValue}`;
+      });
+        medicalCase.patientInformation = {
+          ...medicalCase.patientInformation,
+          extraInformation: decryptedUrl
+        }
+      }
+    })
     res.status(200).send(newCases);
   } catch (err: any) {
     res
