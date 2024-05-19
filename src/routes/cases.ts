@@ -53,8 +53,9 @@ router.post("/send", verifyToken, async (req: any, res) => {
   }
 });
 /**
- * Route to receive patient information.
- * Verifies the token and stores the patient information in the database.
+ * Route to receive patient information from the chatbot.
+ * This endpoint is called by the chatbot when a new case is created.
+ * It verifies the token and stores the patient information in the database.
  */
 router.post("/recieve", verifyToken, async (req, res) => {
   const patientInformation: PatientInformation = req.body;
